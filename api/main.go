@@ -1,7 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"api/configs"
+	"api/helpers"
+)
 
 func main() {
-	fmt.Println("Hello World");
+	helpers.LoadENV()
+	configs.GetPostgresConnection()
+	
+	defer configs.Postgres.Close()
 }

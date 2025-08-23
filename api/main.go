@@ -9,5 +9,5 @@ func main() {
 	helpers.LoadENV()
 	configs.GetPostgresConnection()
 	
-	defer configs.Postgres.Close()
+	defer configs.DB.Close()
 }

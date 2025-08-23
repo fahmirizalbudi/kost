@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	Postgres *sql.DB
+	DB *sql.DB
 	err error
 )
 
@@ -21,12 +21,12 @@ func GetPostgresConnection() {
 		os.Getenv("PGDATABASE"),
 	)
 
-	Postgres, err = sql.Open("postgres", postgresInfo)
+	DB, err = sql.Open("postgres", postgresInfo)
 	if err != nil {
 		panic(err)
 	}
 
-	err = Postgres.Ping()
+	err = DB.Ping()
 	if err != nil {
 		panic(err)
 	}

@@ -10,7 +10,7 @@ CREATE TABLE rentals (
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     duration_months INT NOT NULL,
-    status rental_status DEFAULT 'pending'
+    status rental_status DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

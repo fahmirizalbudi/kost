@@ -33,3 +33,9 @@ func CreateUser(dbParam *sql.DB, userRequest req.UserRequest) (response res.User
 	err = dbParam.QueryRow(sql, userRequest.Name, userRequest.Email, userRequest.Password, userRequest.Role, userRequest.Phone, userRequest.Address).Scan(&response.ID, &response.Name, &response.Email, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
 	return
 }
+
+func GetUserByID(dbParam *sql.DB, id int) (response res.UserResponse, err error) {
+	sql := "SELECT id, name, email, role, phone, address, created_at, updated_at FROM users WHERE id = $1"
+	err = dbParam.QueryRow(sql, id).Scan(&response.ID, &response.Name, &response.Email, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
+	return
+}

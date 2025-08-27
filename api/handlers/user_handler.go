@@ -5,6 +5,10 @@ import (
 	repo "api/repositories"
 	"api/types/structs"
 	req "api/types/structs/requests"
+	"database/sql"
+	"fmt"
+	"strconv"
+
 	// res "api/types/structs/responses"
 	"api/utils/validate"
 	"net/http"
@@ -61,7 +65,7 @@ func UserStore(c *gin.Context) {
 
 	user, err := repo.CreateUser(configs.DB, userRequest)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, structs.Payload{
+		c.AbortWithStatusJSON(http.StatusInternalServerError, structs.Payload{
 			Message: "Internal server error",
 			Error:   "Internal Server Error",
 			Data:    nil,
@@ -72,6 +76,35 @@ func UserStore(c *gin.Context) {
 	c.JSON(http.StatusOK, structs.Payload{
 		Message: "User inserted successfully",
 		Error:   nil,
+		Data: user,
+	})
+}
+
+func UserFind(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	
+	user, err := repo.GetUserByID(configs.DB, id)
+	if err == sql.ErrNoRows {
+		c.AbortWithStatusJSON(http.StatusNotFound, structs.Payload{
+			Message: fmt.Sprintf("Category with id %d not found", id),
+			Error:   "Not Found",
+			Data:    nil,
+		})
+		return
+	}
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, structs.Payload{
+			Message: "Internal server error",
+			Error:   "Internal Server Error",
+			Data:    nil,
+		})
+		return;
+	}
+
+	c.JSON(http.StatusOK, structs.Payload {
+		Message: fmt.Sprintf("User with id %d successfully found", id),
+		Error: nil,
 		Data: user,
 	})
 }

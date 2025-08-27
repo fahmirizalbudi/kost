@@ -54,9 +54,7 @@ func UserStore(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, structs.Payload{
 			Message: "Validation error",
 			Error:   "Unprocessable Entity",
-			Data:    gin.H{
-				"validations": validations,
-			},
+			Data:    validations,
 		})
 		return
 	}

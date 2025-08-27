@@ -39,3 +39,15 @@ func GetUserByID(dbParam *sql.DB, id int) (response res.UserResponse, err error)
 	err = dbParam.QueryRow(sql, id).Scan(&response.ID, &response.Name, &response.Email, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
 	return
 }
+
+func UpdateUser(dbParam *sql.DB, id int, userRequest req.UserRequest) (response res.UserResponse, err error) {
+	var sql string
+	if userRequest.Password != "" {
+		sql = "UPDATE users SET name = $1, email = $2, password = $3, role = $4, phone = $5, address = $6, updated_at = NOW() WHERE id = $7 RETURNING id, name, email, role, phone, address, created_at, updated_at"
+		err = dbParam.QueryRow(sql, userRequest.Name, userRequest.Email, userRequest.Password, userRequest.Role, userRequest.Phone, userRequest.Address, id).Scan(&response.ID, &response.Name, &response.Email, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
+	} else {
+		sql = "UPDATE users SET name = $1, email = $2, role = $3, phone = $4, address = $5, updated_at = NOW() WHERE id = $6 RETURNING id, name, email, role, phone, address, created_at, updated_at"
+		err = dbParam.QueryRow(sql, userRequest.Name, userRequest.Email, userRequest.Role, userRequest.Phone, userRequest.Address, id).Scan(&response.ID, &response.Name, &response.Email, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
+	}
+	return
+}

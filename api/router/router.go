@@ -13,6 +13,7 @@ func Setup() *gin.Engine {
 	api.GET("/users", handlers.UserIndex)
 	api.POST("/users", handlers.UserStore)
 	api.GET("/users/:id", handlers.UserFind)
+	api.PUT("/users/:id", handlers.UserUpdate)
 
 	return router
 }

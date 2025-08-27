@@ -86,7 +86,7 @@ func UserFind(c *gin.Context) {
 	user, err := repo.GetUserByID(configs.DB, id)
 	if err == sql.ErrNoRows {
 		c.AbortWithStatusJSON(http.StatusNotFound, structs.Payload{
-			Message: fmt.Sprintf("Category with id %d not found", id),
+			Message: fmt.Sprintf("User with id %d not found", id),
 			Error:   "Not Found",
 			Data:    nil,
 		})
@@ -104,6 +104,61 @@ func UserFind(c *gin.Context) {
 
 	c.JSON(http.StatusOK, structs.Payload {
 		Message: fmt.Sprintf("User with id %d successfully found", id),
+		Error: nil,
+		Data: user,
+	})
+}
+
+func UserUpdate(c *gin.Context) {
+	var userRequest req.UserRequest
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	err := c.BindJSON(&userRequest)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusOK, structs.Payload{
+			Message: "Invalid JSON data",
+			Error:   "Bad Request",
+			Data:    nil,
+		})
+		return
+	}
+
+	validations := map[string]string{}
+	validate.Required(validations, userRequest.Name, "name")
+	validate.Required(validations, userRequest.Email, "email")
+	validate.Required(validations, userRequest.Role, "role")
+	validate.Required(validations, userRequest.Phone, "phone")
+	validate.Required(validations, userRequest.Address, "address")
+	if len(validations) > 0 {
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, structs.Payload{
+			Message: "Validation error",
+			Error:   "Unprocessable Entity",
+			Data:    validations,
+		})
+		return
+	}
+
+	user, err := repo.UpdateUser(configs.DB, id, userRequest)
+	if err == sql.ErrNoRows {
+		c.AbortWithStatusJSON(http.StatusNotFound, structs.Payload{
+			Message: fmt.Sprintf("User with id %d not found", id),
+			Error:   "Not Found",
+			Data:    nil,
+		})
+		return
+	}
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, structs.Payload{
+			Message: "Internal server error",
+			Error:   "Internal Server Error",
+			Data:    nil,
+		})
+		return;
+	}
+
+	c.JSON(http.StatusOK, structs.Payload {
+		Message: fmt.Sprintf("User with id %d successfully updated", id),
 		Error: nil,
 		Data: user,
 	})

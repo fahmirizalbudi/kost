@@ -11,6 +11,7 @@ func Setup() *gin.Engine {
 	api := router.Group("/api")
 
 	api.GET("/users", handlers.UserIndex)
+	api.POST("/users", handlers.UserStore)
 
 	return router
 }

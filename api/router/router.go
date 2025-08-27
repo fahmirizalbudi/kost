@@ -14,6 +14,7 @@ func Setup() *gin.Engine {
 	api.POST("/users", handlers.UserStore)
 	api.GET("/users/:id", handlers.UserFind)
 	api.PUT("/users/:id", handlers.UserUpdate)
+	api.DELETE("/users/:id", handlers.UserDestroy)
 
 	return router
 }

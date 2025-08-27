@@ -163,3 +163,32 @@ func UserUpdate(c *gin.Context) {
 		Data: user,
 	})
 }
+
+func UserDestroy(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	err := repo.DeleteUser(configs.DB, id)
+	if err == sql.ErrNoRows {
+		c.AbortWithStatusJSON(http.StatusNotFound, structs.Payload{
+			Message: fmt.Sprintf("User with id %d not found", id),
+			Error:   "Not Found",
+			Data:    nil,
+		})
+		return
+	}
+
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, structs.Payload{
+			Message: "Internal server error",
+			Error:   "Internal Server Error",
+			Data:    nil,
+		})
+		return;
+	}
+
+	c.JSON(http.StatusOK, structs.Payload {
+		Message: fmt.Sprintf("User with id %d successfully deleted", id),
+		Error: nil,
+		Data: nil,
+	})
+}

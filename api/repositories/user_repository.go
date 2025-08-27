@@ -7,9 +7,9 @@ import (
 )
 
 func GetAllUsers(dbParam *sql.DB) (result []res.UserResponse, err error) {
-	sql := "SELECT id, name, email, role, phone, address, created_at, updated_at FROM users"
+	sqlStatement := "SELECT id, name, email, role, phone, address, created_at, updated_at FROM users"
 
-	rows, err := dbParam.Query(sql)
+	rows, err := dbParam.Query(sqlStatement)
 	if err != nil {
 		panic(err)
 	}
@@ -29,25 +29,35 @@ func GetAllUsers(dbParam *sql.DB) (result []res.UserResponse, err error) {
 }
 
 func CreateUser(dbParam *sql.DB, userRequest req.UserRequest) (response res.UserResponse, err error) {
-	sql := "INSERT INTO users (name, email, password, role, phone, address) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, name, email, role, phone, address, created_at, updated_at"
-	err = dbParam.QueryRow(sql, userRequest.Name, userRequest.Email, userRequest.Password, userRequest.Role, userRequest.Phone, userRequest.Address).Scan(&response.ID, &response.Name, &response.Email, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
+	sqlStatement := "INSERT INTO users (name, email, password, role, phone, address) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, name, email, role, phone, address, created_at, updated_at"
+	err = dbParam.QueryRow(sqlStatement, userRequest.Name, userRequest.Email, userRequest.Password, userRequest.Role, userRequest.Phone, userRequest.Address).Scan(&response.ID, &response.Name, &response.Email, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
 	return
 }
 
 func GetUserByID(dbParam *sql.DB, id int) (response res.UserResponse, err error) {
-	sql := "SELECT id, name, email, role, phone, address, created_at, updated_at FROM users WHERE id = $1"
-	err = dbParam.QueryRow(sql, id).Scan(&response.ID, &response.Name, &response.Email, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
+	sqlStatement := "SELECT id, name, email, role, phone, address, created_at, updated_at FROM users WHERE id = $1"
+	err = dbParam.QueryRow(sqlStatement, id).Scan(&response.ID, &response.Name, &response.Email, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
 	return
 }
 
 func UpdateUser(dbParam *sql.DB, id int, userRequest req.UserRequest) (response res.UserResponse, err error) {
-	var sql string
+	var sqlStatement string
 	if userRequest.Password != "" {
-		sql = "UPDATE users SET name = $1, email = $2, password = $3, role = $4, phone = $5, address = $6, updated_at = NOW() WHERE id = $7 RETURNING id, name, email, role, phone, address, created_at, updated_at"
-		err = dbParam.QueryRow(sql, userRequest.Name, userRequest.Email, userRequest.Password, userRequest.Role, userRequest.Phone, userRequest.Address, id).Scan(&response.ID, &response.Name, &response.Email, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
+		sqlStatement = "UPDATE users SET name = $1, email = $2, password = $3, role = $4, phone = $5, address = $6, updated_at = NOW() WHERE id = $7 RETURNING id, name, email, role, phone, address, created_at, updated_at"
+		err = dbParam.QueryRow(sqlStatement, userRequest.Name, userRequest.Email, userRequest.Password, userRequest.Role, userRequest.Phone, userRequest.Address, id).Scan(&response.ID, &response.Name, &response.Email, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
 	} else {
-		sql = "UPDATE users SET name = $1, email = $2, role = $3, phone = $4, address = $5, updated_at = NOW() WHERE id = $6 RETURNING id, name, email, role, phone, address, created_at, updated_at"
-		err = dbParam.QueryRow(sql, userRequest.Name, userRequest.Email, userRequest.Role, userRequest.Phone, userRequest.Address, id).Scan(&response.ID, &response.Name, &response.Email, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
+		sqlStatement = "UPDATE users SET name = $1, email = $2, role = $3, phone = $4, address = $5, updated_at = NOW() WHERE id = $6 RETURNING id, name, email, role, phone, address, created_at, updated_at"
+		err = dbParam.QueryRow(sqlStatement, userRequest.Name, userRequest.Email, userRequest.Role, userRequest.Phone, userRequest.Address, id).Scan(&response.ID, &response.Name, &response.Email, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
 	}
 	return
+}
+
+func DeleteUser(dbParam *sql.DB, id int) error {
+	sqlStatement := "DELETE FROM users WHERE id = $1"
+	result, err := dbParam.Exec(sqlStatement, id)
+	row, _ := result.RowsAffected()
+	if row == 0 {
+		return sql.ErrNoRows
+	}
+	return err
 }

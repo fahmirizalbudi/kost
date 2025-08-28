@@ -13,6 +13,6 @@ CREATE TABLE dormitory_previews (
 -- +migrate Down
 -- +migrate StatementBegin
 
-DROP TABLE IF EXISTS boarding_house_details;
+DROP TABLE IF EXISTS dormitory_previews;
 
 -- +migrate StatementEnd

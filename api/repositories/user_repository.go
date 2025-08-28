@@ -6,7 +6,7 @@ import (
 	"database/sql"
 )
 
-func GetAllUsers(dbParam *sql.DB) (result []res.UserResponse, err error) {
+func GetAllUsers(dbParam *sql.DB) (response []res.UserResponse, err error) {
 	sqlStatement := "SELECT id, name, email, role, phone, address, created_at, updated_at FROM users"
 
 	rows, err := dbParam.Query(sqlStatement)
@@ -23,7 +23,7 @@ func GetAllUsers(dbParam *sql.DB) (result []res.UserResponse, err error) {
 			panic(err)
 		}
 		
-		result = append(result, user)
+		response = append(response, user)
 	}
 	return
 }

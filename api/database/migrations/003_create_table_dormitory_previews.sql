@@ -1,7 +1,7 @@
 -- +migrate Up
 -- +migrate StatementBegin
 
-CREATE TABLE boarding_house_details (
+CREATE TABLE dormitory_previews (
     id SERIAL PRIMARY KEY,
     dormitory_id INT,
     url TEXT NOT NULL,

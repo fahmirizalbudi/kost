@@ -42,7 +42,8 @@ func UserIndex(c *gin.Context) {
 		return
 	}
 
-	jsonData, _ := json.Marshal(users)
+	jsonData, err := json.Marshal(users)
+	if err != nil { panic(err) }
 	redis.SetKey("users:all", string(jsonData), 60)
 
 	c.JSON(http.StatusOK, structs.Payload{
@@ -134,7 +135,8 @@ func UserFind(c *gin.Context) {
 		return
 	}
 
-	jsonData, _ := json.Marshal(user)
+	jsonData, err := json.Marshal(user)
+	if err != nil { panic(err) }
 	redis.SetKey(fmt.Sprintf("user:%d", id), string(jsonData), 60)
 
 	c.JSON(http.StatusOK, structs.Payload{

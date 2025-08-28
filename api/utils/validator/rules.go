@@ -8,7 +8,7 @@ func New() validator {
 	return validator{}
 }
 
-func (v validator) Required(value interface{}, field string) {
+func (v validator) Required(value any, field string) {
 	if value == "" || value == nil {
 		v[field] = fmt.Sprintf("The %s field is required.", field)
 	}

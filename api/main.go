@@ -12,6 +12,7 @@ import (
 func main() {
 	helpers.LoadENV()
 	configs.GetPostgresConnection()
+	configs.GetRedisConnection()
 	migrations.Run(configs.DB, migrate.Up)
 	defer configs.DB.Close()
 

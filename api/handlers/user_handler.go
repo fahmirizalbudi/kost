@@ -2,14 +2,16 @@ package handlers
 
 import (
 	"api/configs"
+	"api/database/redis"
 	repo "api/repositories"
 	"api/types/structs"
 	req "api/types/structs/requests"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"strconv"
 
-	// res "api/types/structs/responses"
+	res "api/types/structs/responses"
 	"api/utils/validate"
 	"net/http"
 
@@ -17,6 +19,19 @@ import (
 )
 
 func UserIndex(c *gin.Context) {
+	cached, err := redis.GetKey("users:all")
+	if err == nil {
+		var users []res.UserResponse
+		json.Unmarshal([]byte(cached), &users)
+
+		c.JSON(http.StatusOK, structs.Payload{
+			Message: "Users retrieved successfully (from cache)",
+			Error:   nil,
+			Data:    users,
+		})
+		return
+	}
+
 	users, err := repo.GetAllUsers(configs.DB)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, structs.Payload{
@@ -27,10 +42,13 @@ func UserIndex(c *gin.Context) {
 		return
 	}
 
+	jsonData, _ := json.Marshal(users)
+	redis.SetKey("users:all", string(jsonData), 60)
+
 	c.JSON(http.StatusOK, structs.Payload{
 		Message: "Users retrieved successfully",
 		Error:   nil,
-		Data: users,
+		Data:    users,
 	})
 }
 
@@ -73,16 +91,30 @@ func UserStore(c *gin.Context) {
 		return
 	}
 
+	redis.DelKey("users:all")
+
 	c.JSON(http.StatusOK, structs.Payload{
 		Message: "User inserted successfully",
 		Error:   nil,
-		Data: user,
+		Data:    user,
 	})
 }
 
 func UserFind(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	
+	cached, err := redis.GetKey(fmt.Sprintf("user:%d", id))
+	if err == nil {
+		var user res.UserResponse
+		json.Unmarshal([]byte(cached), &user)
+
+		c.JSON(http.StatusOK, structs.Payload{
+			Message: fmt.Sprintf("User with id %d successfully found (from cache)", id),
+			Error:   nil,
+			Data:    user,
+		})
+		return
+	}
+
 	user, err := repo.GetUserByID(configs.DB, id)
 	if err == sql.ErrNoRows {
 		c.AbortWithStatusJSON(http.StatusNotFound, structs.Payload{
@@ -99,13 +131,16 @@ func UserFind(c *gin.Context) {
 			Error:   "Internal Server Error",
 			Data:    nil,
 		})
-		return;
+		return
 	}
 
-	c.JSON(http.StatusOK, structs.Payload {
+	jsonData, _ := json.Marshal(user)
+	redis.SetKey(fmt.Sprintf("user:%d", id), string(jsonData), 60)
+
+	c.JSON(http.StatusOK, structs.Payload{
 		Message: fmt.Sprintf("User with id %d successfully found", id),
-		Error: nil,
-		Data: user,
+		Error:   nil,
+		Data:    user,
 	})
 }
 
@@ -154,13 +189,16 @@ func UserUpdate(c *gin.Context) {
 			Error:   "Internal Server Error",
 			Data:    nil,
 		})
-		return;
+		return
 	}
+	
+	redis.DelKey("users:all")
+	redis.DelKey(fmt.Sprintf("user:%d", id))
 
-	c.JSON(http.StatusOK, structs.Payload {
+	c.JSON(http.StatusOK, structs.Payload{
 		Message: fmt.Sprintf("User with id %d successfully updated", id),
-		Error: nil,
-		Data: user,
+		Error:   nil,
+		Data:    user,
 	})
 }
 
@@ -183,12 +221,15 @@ func UserDestroy(c *gin.Context) {
 			Error:   "Internal Server Error",
 			Data:    nil,
 		})
-		return;
+		return
 	}
 
-	c.JSON(http.StatusOK, structs.Payload {
+	redis.DelKey("users:all")
+	redis.DelKey(fmt.Sprintf("user:%d", id))
+
+	c.JSON(http.StatusOK, structs.Payload{
 		Message: fmt.Sprintf("User with id %d successfully deleted", id),
-		Error: nil,
-		Data: nil,
+		Error:   nil,
+		Data:    nil,
 	})
 }

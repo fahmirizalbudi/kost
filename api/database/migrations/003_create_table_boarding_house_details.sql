@@ -3,7 +3,7 @@
 
 CREATE TABLE boarding_house_details (
     id SERIAL PRIMARY KEY,
-    boarding_house_id INT,
+    dormitory_id INT,
     url TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

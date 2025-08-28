@@ -12,7 +12,7 @@ import (
 	"strconv"
 
 	res "api/types/structs/responses"
-	"api/utils/validate"
+	"api/utils/validator"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -66,7 +66,7 @@ func UserStore(c *gin.Context) {
 		return
 	}
 
-	v := validate.New()
+	v := validator.New()
 	v.Required(userRequest.Name, "name")
 	v.Required(userRequest.Email, "email")
 	v.Required(userRequest.Password, "password")
@@ -160,7 +160,7 @@ func UserUpdate(c *gin.Context) {
 		return
 	}
 
-	v := validate.New()
+	v := validator.New()
 	v.Required(userRequest.Name, "name")
 	v.Required(userRequest.Email, "email")
 	v.Required(userRequest.Role, "role")

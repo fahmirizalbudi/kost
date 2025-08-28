@@ -66,18 +66,18 @@ func UserStore(c *gin.Context) {
 		return
 	}
 
-	validations := map[string]string{}
-	validate.Required(validations, userRequest.Name, "name")
-	validate.Required(validations, userRequest.Email, "email")
-	validate.Required(validations, userRequest.Password, "password")
-	validate.Required(validations, userRequest.Role, "role")
-	validate.Required(validations, userRequest.Phone, "phone")
-	validate.Required(validations, userRequest.Address, "address")
-	if len(validations) > 0 {
+	v := validate.New()
+	v.Required(userRequest.Name, "name")
+	v.Required(userRequest.Email, "email")
+	v.Required(userRequest.Password, "password")
+	v.Required(userRequest.Role, "role")
+	v.Required(userRequest.Phone, "phone")
+	v.Required(userRequest.Address, "address")
+	if v.Errors() {
 		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, structs.Payload{
 			Message: "Validation error",
 			Error:   "Unprocessable Entity",
-			Data:    validations,
+			Data:    v,
 		})
 		return
 	}
@@ -160,17 +160,17 @@ func UserUpdate(c *gin.Context) {
 		return
 	}
 
-	validations := map[string]string{}
-	validate.Required(validations, userRequest.Name, "name")
-	validate.Required(validations, userRequest.Email, "email")
-	validate.Required(validations, userRequest.Role, "role")
-	validate.Required(validations, userRequest.Phone, "phone")
-	validate.Required(validations, userRequest.Address, "address")
-	if len(validations) > 0 {
+	v := validate.New()
+	v.Required(userRequest.Name, "name")
+	v.Required(userRequest.Email, "email")
+	v.Required(userRequest.Role, "role")
+	v.Required(userRequest.Phone, "phone")
+	v.Required(userRequest.Address, "address")
+	if v.Errors() {
 		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, structs.Payload{
 			Message: "Validation error",
 			Error:   "Unprocessable Entity",
-			Data:    validations,
+			Data:    v,
 		})
 		return
 	}

@@ -61,3 +61,9 @@ func DeleteUser(dbParam *sql.DB, id int) error {
 	}
 	return err
 }
+
+func GetUserByEmail(dbParam *sql.DB, loginRequest req.LoginRequest) (response res.UserResponse, hashedPassword string, err error) {
+	sqlStatement := "SELECT * FROM users WHERE email = $1"
+	err = dbParam.QueryRow(sqlStatement, loginRequest.Email).Scan(&response.ID, &response.Name, &response.Email, &hashedPassword, &response.Role, &response.Phone, &response.Address, &response.CreatedAt, &response.UpdatedAt)
+	return
+}

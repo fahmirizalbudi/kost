@@ -16,5 +16,11 @@ func Setup() *gin.Engine {
 	api.PUT("/users/:id", handlers.UserUpdate)
 	api.DELETE("/users/:id", handlers.UserDestroy)
 
+	api.GET("/dormitories", handlers.DormitoryIndex)
+	api.POST("/dormitories", handlers.DormitoryStore)
+	api.GET("/dormitories/:id", handlers.DormitoryFind)
+	api.PUT("/dormitories/:id", handlers.DormitoryUpdate)
+	api.DELETE("/dormitories/:id", handlers.DormitoryDestroy)
+
 	return router
 }

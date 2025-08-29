@@ -34,7 +34,7 @@ func CreateDormitory(dbParam *sql.DB, dormitoryRequest req.DormitoryRequest) (re
 	return
 }
 
-func FindDormitory(dbParam *sql.DB, id int) (response res.DormitoryResponse, err error) {
+func GetDormitoryByID(dbParam *sql.DB, id int) (response res.DormitoryResponse, err error) {
 	sqlStatement := "SELECT * FROM dormitories WHERE id = $1"
 	dbParam.QueryRow(sqlStatement, id).Scan(&response.ID, &response.Name, &response.Address, &response.Description, &response.Price, &response.Facilities, &response.GoogleMaps, &response.CreatedAt, &response.UpdatedAt)
 	return

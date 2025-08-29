@@ -117,7 +117,7 @@ func DormitoryFind(c *gin.Context) {
 		return
 	}
 
-	dormitory, err := repo.FindDormitory(configs.DB, id)
+	dormitory, err := repo.GetDormitoryByID(configs.DB, id)
 	if err == sql.ErrNoRows {
 		c.AbortWithStatusJSON(http.StatusNotFound, structs.Payload{
 			Message: fmt.Sprintf("Dormitory with id %d not found", id),

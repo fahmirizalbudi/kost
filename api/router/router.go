@@ -10,6 +10,10 @@ func Setup() *gin.Engine {
 	router := gin.Default()
 	api := router.Group("/api")
 
+	api.POST("/auth/register", handlers.Register)
+	api.POST("/auth/login", handlers.Login)
+	api.POST("/auth/logout", handlers.Logout)
+
 	api.GET("/users", handlers.UserIndex)
 	api.POST("/users", handlers.UserStore)
 	api.GET("/users/:id", handlers.UserFind)

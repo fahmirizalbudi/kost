@@ -1,6 +1,9 @@
 package validator
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type validator map[string]string
 
@@ -9,7 +12,7 @@ func New() validator {
 }
 
 func (v validator) Required(value any, field string) {
-	if value == "" || value == nil {
+	if value == nil || (reflect.ValueOf(value).Kind() == reflect.Ptr && reflect.ValueOf(value).IsNil()) || fmt.Sprint(value) == "" {
 		v[field] = fmt.Sprintf("The %s field is required.", field)
 	}
 }

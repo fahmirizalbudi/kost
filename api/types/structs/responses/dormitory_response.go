@@ -13,3 +13,16 @@ type DormitoryResponse struct {
 	CreatedAt   time.Time	`json:"created_at"`
 	UpdatedAt   time.Time	`json:"updated_at"`
 }
+
+type DormitoryWithPreviewResponse struct {
+	ID          int    						`json:"id"`
+	Name        string 						`json:"name"`
+	Address     string 						`json:"address"`
+	Description string 						`json:"description"`
+	Price       int    						`json:"price"`
+	Facilities  string 						`json:"facilities"`
+	GoogleMaps  string 						`json:"google_maps"`
+	Previews	[]DormitoryPreviewResponse	`json:"previews"`
+	CreatedAt   time.Time					`json:"created_at"`
+	UpdatedAt   time.Time					`json:"updated_at"`
+}

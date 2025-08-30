@@ -55,3 +55,32 @@ func DeleteDormitory(dbParam *sql.DB, id int) error {
 	}
 	return err
 }
+
+func GetAllDormitoriesWithPreviews(dbParam *sql.DB) (response []res.DormitoryWithPreviewResponse, err error) {
+	sqlStatement := "SELECT * FROM dormitories"
+	rows, err := dbParam.Query(sqlStatement)
+	if err != nil {
+		panic(err)
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		var dormitory res.DormitoryWithPreviewResponse
+
+		err = rows.Scan(&dormitory.ID, &dormitory.Name, &dormitory.Address, &dormitory.Description, &dormitory.Price, &dormitory.Facilities, &dormitory.GoogleMaps, &dormitory.CreatedAt, &dormitory.UpdatedAt)
+		if err != nil {
+			panic(err)
+		}
+
+		dormitoryPreviews, err := GetDormitoryPreviewsByDormitoryID(dbParam, dormitory.ID)
+		if err != nil {
+			panic(err)
+		}
+
+		dormitory.Previews = dormitoryPreviews
+
+		response = append(response, dormitory)
+	}
+
+	return
+}

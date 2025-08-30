@@ -8,6 +8,8 @@ import (
 
 func Setup() *gin.Engine {
 	router := gin.Default()
+	router.Static("/uploads", "./public/uploads")
+
 	api := router.Group("/api")
 
 	api.POST("/auth/register", handlers.Register)
@@ -25,6 +27,12 @@ func Setup() *gin.Engine {
 	api.GET("/dormitories/:id", handlers.DormitoryFind)
 	api.PUT("/dormitories/:id", handlers.DormitoryUpdate)
 	api.DELETE("/dormitories/:id", handlers.DormitoryDestroy)
+
+	api.GET("/dormitories/previews", handlers.DormitoryAttachPreviews)
+	api.GET("/dormitories/:id/previews", handlers.DormitoryPreviewIndex)
+
+	api.POST("/dormitory-previews", handlers.DormitoryPreviewStore)
+	api.DELETE("/dormitory-previews/:id", handlers.DormitoryPreviewDestroy)
 
 	return router
 }

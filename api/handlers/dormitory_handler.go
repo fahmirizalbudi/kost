@@ -237,3 +237,21 @@ func DormitoryDestroy(c *gin.Context) {
 		Data:    nil,
 	})
 }
+
+func DormitoryAttachPreviews(c *gin.Context) {
+	dormitories, err := repo.GetAllDormitoriesWithPreviews(configs.DB)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, structs.Payload{
+			Message: "Internal server error",
+			Error:   "Internal Server Error",
+			Data:    nil,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, structs.Payload{
+		Message: "Dormitories with previews retrieved successfully",
+		Error:   nil,
+		Data:    dormitories,
+	})
+}

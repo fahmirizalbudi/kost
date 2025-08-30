@@ -36,13 +36,13 @@ func CreateDormitory(dbParam *sql.DB, dormitoryRequest req.DormitoryRequest) (re
 
 func GetDormitoryByID(dbParam *sql.DB, id int) (response res.DormitoryResponse, err error) {
 	sqlStatement := "SELECT * FROM dormitories WHERE id = $1"
-	dbParam.QueryRow(sqlStatement, id).Scan(&response.ID, &response.Name, &response.Address, &response.Description, &response.Price, &response.Facilities, &response.GoogleMaps, &response.CreatedAt, &response.UpdatedAt)
+	err = dbParam.QueryRow(sqlStatement, id).Scan(&response.ID, &response.Name, &response.Address, &response.Description, &response.Price, &response.Facilities, &response.GoogleMaps, &response.CreatedAt, &response.UpdatedAt)
 	return
 }
 
 func UpdateDormitory(dbParam *sql.DB, id int, dormitoryRequest req.DormitoryRequest) (response res.DormitoryResponse, err error) {
 	sqlStatement := "UPDATE dormitories SET name = $1, address = $2, description = $3, price = $4, facilities = $5, google_maps = $6, updated_at = NOW() WHERE id = $7 RETURNING *"
-	dbParam.QueryRow(sqlStatement, dormitoryRequest.Name, dormitoryRequest.Address, dormitoryRequest.Description, *dormitoryRequest.Price, dormitoryRequest.Facilities, dormitoryRequest.GoogleMaps, id).Scan(&response.ID, &response.Name, &response.Address, &response.Description, &response.Price, &response.Facilities, &response.GoogleMaps, &response.CreatedAt, &response.UpdatedAt)
+	err = dbParam.QueryRow(sqlStatement, dormitoryRequest.Name, dormitoryRequest.Address, dormitoryRequest.Description, *dormitoryRequest.Price, dormitoryRequest.Facilities, dormitoryRequest.GoogleMaps, id).Scan(&response.ID, &response.Name, &response.Address, &response.Description, &response.Price, &response.Facilities, &response.GoogleMaps, &response.CreatedAt, &response.UpdatedAt)
 	return
 }
 

@@ -12,6 +12,7 @@ import (
 	"strconv"
 
 	res "api/types/structs/responses"
+	"api/utils/password"
 	"api/utils/validator"
 	"net/http"
 
@@ -81,6 +82,8 @@ func UserStore(c *gin.Context) {
 		})
 		return
 	}
+
+	userRequest.Password = password.Hash(userRequest.Password)
 
 	user, err := repo.CreateUser(configs.DB, userRequest)
 	if err != nil {
@@ -174,6 +177,8 @@ func UserUpdate(c *gin.Context) {
 		})
 		return
 	}
+
+	userRequest.Password = password.Hash(userRequest.Password)
 
 	user, err := repo.UpdateUser(configs.DB, id, userRequest)
 	if err == sql.ErrNoRows {

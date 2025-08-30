@@ -34,5 +34,13 @@ func Setup() *gin.Engine {
 	api.POST("/dormitory-previews", handlers.DormitoryPreviewStore)
 	api.DELETE("/dormitory-previews/:id", handlers.DormitoryPreviewDestroy)
 
+	api.GET("/dormitories/:id/rooms", handlers.RoomByDormitory)
+
+	api.GET("/rooms", handlers.RoomIndex)
+	api.POST("/rooms", handlers.RoomStore)
+	api.GET("/rooms/:id", handlers.RoomFind)
+	api.PUT("/rooms/:id", handlers.RoomUpdate)
+	api.DELETE("/rooms/:id", handlers.RoomDestroy)
+
 	return router
 }

@@ -2,6 +2,7 @@ package helpers
 
 import (
 	res "api/types/structs/responses"
+	"errors"
 	"os"
 	"time"
 
@@ -31,4 +32,22 @@ func GenerateJWT(user res.UserResponse) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	ss, err := token.SignedString([]byte(os.Getenv("JWT_KEY")))
 	return ss, err
+}
+
+func ValidateToken(tokenString string) (any, error) {
+	claims := &Claims{}
+	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (any, error) {
+		return []byte(os.Getenv("JWT_KEY")), nil
+	})
+
+	if err != nil {
+		return nil, errors.New("unauthorized")
+	}
+
+	claims, ok := token.Claims.(*Claims)
+	if !ok || !token.Valid {
+		return nil, errors.New("unauthorized")
+	}
+
+	return claims, nil
 }

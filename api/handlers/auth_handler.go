@@ -127,6 +127,23 @@ func Login(c *gin.Context) {
 	})
 }
 
-func Logout(c *gin.Context) {
+func Me(c *gin.Context) {
+	claims, _ := c.Get("claims")
+	auth := claims.(*helpers.Claims)
 
+	user, err := repo.GetUserByID(configs.DB, auth.ID)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, structs.Payload{
+			Message: "Internal server error",
+			Error:   "Internal Server Error",
+			Data:    nil,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, structs.Payload{
+		Message: "User profile retrieved successfully",
+		Error:   nil,
+		Data:    user,
+	})
 }

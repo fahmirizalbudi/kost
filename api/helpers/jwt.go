@@ -24,6 +24,7 @@ func GenerateJWT(user res.UserResponse) (string, error) {
 		Email: user.Email,
 		Role: user.Role,
 		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(3 * 24 * time.Hour)),
 			IssuedAt: jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
 		},

@@ -12,6 +12,7 @@ func Setup() *gin.Engine {
 
 	api.POST("/auth/register", handlers.Register)
 	api.POST("/auth/login", handlers.Login)
+	api.POST("/auth/me", handlers.Me)
 	api.POST("/auth/logout", handlers.Logout)
 
 	api.GET("/users", handlers.UserIndex)

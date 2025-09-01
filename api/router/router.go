@@ -2,6 +2,7 @@ package router
 
 import (
 	"api/handlers"
+	"api/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -41,6 +42,12 @@ func Setup() *gin.Engine {
 	api.GET("/rooms/:id", handlers.RoomFind)
 	api.PUT("/rooms/:id", handlers.RoomUpdate)
 	api.DELETE("/rooms/:id", handlers.RoomDestroy)
+
+	api.GET("/rentals", handlers.RentalIndex)
+	api.POST("/rentals", middlewares.AuthMiddleware, handlers.RentalStore)
+	api.PATCH("/rentals/:id/status", middlewares.AuthMiddleware, handlers.RentalStatus)
+	api.PATCH("/rentals/:id/duration", middlewares.AuthMiddleware, handlers.RentalAddDuration)
+	api.GET("/rentals/me", middlewares.AuthMiddleware, handlers.RentalByAuthenticated)
 
 	return router
 }

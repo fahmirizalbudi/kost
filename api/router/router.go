@@ -49,5 +49,12 @@ func Setup() *gin.Engine {
 	api.PATCH("/rentals/:id/duration", middlewares.AuthMiddleware, handlers.RentalAddDuration)
 	api.GET("/rentals/me", middlewares.AuthMiddleware, handlers.RentalByAuthenticated)
 
+	api.GET("/transactions", handlers.TransactionIndex)
+	api.POST("/transactions/midtrans", handlers.TransactionMidtrans)
+	api.POST("/transactions", handlers.TransactionStore)
+	api.POST("/transactions/:id/proof", handlers.TransactionAttachProof)
+	api.PATCH("/transactions/:id/status", handlers.TransactionStatus)
+	api.GET("/transactions/:id", handlers.TransactionFind)
+
 	return router
 }

@@ -81,7 +81,7 @@ func GetAuthenticatedUserRentals(dbParam *sql.DB, claims *helpers.Claims) (respo
 	defer rows.Close()
 	for rows.Next() {
 		var rental res.RentalResponse
-		
+
 		err = rows.Scan(&rental.ID, &rental.RoomID, &rental.TenantID, &rental.StartDate, &rental.EndDate, &rental.DurationMonths, &rental.Status, &rental.CreatedAt)
 
 		response = append(response, rental)
@@ -93,5 +93,29 @@ func GetAuthenticatedUserRentals(dbParam *sql.DB, claims *helpers.Claims) (respo
 func GetRentalByID(dbParam *sql.DB, id int) (response res.RentalResponse, err error) {
 	sqlStatement := "SELECT * FROM rentals WHERE id = $1"
 	err = dbParam.QueryRow(sqlStatement, id).Scan(&response.ID, &response.RoomID, &response.TenantID, &response.StartDate, &response.EndDate, &response.DurationMonths, &response.Status, &response.CreatedAt)
+	return
+}
+
+func GetRentalWithRoomAndTenantByID(dbParam *sql.DB, id int) (response res.RentalWithRoomAndTenantResponse, err error) {
+	sqlStatement := "SELECT * FROM rentals WHERE id = $1"
+	err = dbParam.QueryRow(sqlStatement, id).Scan(&response.ID, &response.RoomID, &response.TenantID, &response.StartDate, &response.EndDate, &response.DurationMonths, &response.Status, &response.CreatedAt)
+	if err != nil {
+		panic(err)
+	}
+
+	room, err := GetRoomByID(dbParam, response.RoomID)
+	if err != nil {
+		panic(err)
+	}
+
+	response.Room = room
+
+	tenant, err := GetUserByID(dbParam, response.TenantID)
+	if err != nil {
+		panic(err)
+	}
+
+	response.Tenant = tenant
+
 	return
 }

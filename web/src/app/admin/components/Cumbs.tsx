@@ -7,10 +7,10 @@ type CumbsProps = {
 
 const Cumbs = (cumbsProps: CumbsProps) => {
   return (
-    <>
+    <section>
       <p className={styles.heading}>{cumbsProps.heading}</p>
       <p className={styles.description}>{cumbsProps.description}</p>
-    </>
+    </section>
   )
 }
 

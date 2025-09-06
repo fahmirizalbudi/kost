@@ -13,7 +13,12 @@
   font-weight: 500;
 }
 
-.flex {
+.actions {
   display: flex;
   gap: 14px;
+}
+
+.header {
+  justify-content: space-between;
+  align-items: center;
 }

@@ -7,9 +7,14 @@ import Image from "next/image"
 import { asset } from "@/app/lib/asset"
 import { API_URL } from "@/app/constants/api"
 import Break from "../components/Break"
+import Flex from "@/app/components/layout/Flex"
+import { User } from "@/app/types/user"
+import AddUser from "./components/AddUser"
 
-const fetchUsers = async () => {
-  const res = await fetch(API_URL + "/users")
+const fetchUsers = async (): Promise<User[]> => {
+  const res = await fetch(API_URL + "/users", {
+    cache: "no-store"
+  })
   const json = await res.json()
   return json.data
 }
@@ -19,7 +24,10 @@ const Users = async () => {
 
   return (
     <SafeView>
-      <Cumbs heading="Pengguna" description="Pusat data pengguna untuk melihat, menambah, atau mengelola akun." />
+      <Flex className={styles.header}>
+        <Cumbs heading="Pengguna" description="Pusat data pengguna untuk melihat, menambah, atau mengelola akun." />
+        <AddUser />
+      </Flex>
       <Break height={30} />
       <Table>
         <TableHeader>
@@ -33,14 +41,14 @@ const Users = async () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user: any, i: number) => (
+          {users?.map((user: User, i: number) => (
             <TableRow key={user.id}>
               <TableCell>{i + 1}</TableCell>
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.phone}</TableCell>
               <TableCell>{user.address}</TableCell>
-              <TableCell className={styles.flex}>
+              <TableCell className={styles.actions}>
                 <Button className={`${styles.action}`}>
                   <Image src={asset("edit.svg")} alt="Edit" width={18} height={18} />
                 </Button>

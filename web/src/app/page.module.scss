@@ -1,0 +1,106 @@
+@import "./styles/variable.scss";
+
+.hero {
+    height: calc(100vh - $nav-height);
+    background-image: url("/hero.png");
+    background-repeat: no-repeat;
+    background-position: center 100%;
+    overflow-y: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .motto {
+        width: 210.38px;
+        height: 40px;
+        border: 1px solid $primary-color;
+        color: $primary-color;
+        border-radius: 40px;
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 19px;
+    }
+
+    .description {
+        font-size: 16px;
+        color: $primary-color;
+        margin-bottom: 20.39px;
+    }
+
+    .display {
+        font-weight: 500;
+        font-size: 60px;
+        color: $primary-color;
+        margin-bottom: 50px;
+    }
+
+    .search {
+        width: 690px;
+        height: 72.5px;
+        border-radius: 60px;
+        border: 1px solid #ebebeb;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-left: 25.63px;
+        padding-right: 6px;
+        margin-bottom: 49.11px;
+
+        .input {
+            border: none;
+            outline: none;
+            width: 100%;
+            height: 50%;
+            font-size: 17px;
+            color: $primary-color;
+            position: relative;
+            top: 1px;
+        }
+
+        .handle {
+            width: 65px;
+            height: 60px;
+            background-color: #E7C873;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    }
+
+    .discover {
+        font-size: 16px;
+        font-weight: 500;
+        color: $primary-color;
+        margin-bottom: 20.28px;
+    }
+
+    .params {
+        display: flex;
+        gap: 10px;
+
+        .menu {
+            height: 33px;
+            border: 1px solid #EBEBEB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 33px;
+            padding: 0 14px;
+
+            .anchor {
+                text-decoration: none;
+                font-size: 13px;
+                color: $primary-color;
+            }
+        }
+    }
+}

@@ -1,0 +1,94 @@
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba($color: #000000, $alpha: 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  visibility: hidden;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &.active .modal {
+    animation: fadeIn 0.3s forwards;
+  }
+
+  &:not(.active) .modal {
+    animation: fadeOut 0.3s forwards;
+  }
+
+  .modal {
+    background-color: #fff;
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 0.5rem;
+    opacity: 0;
+    transform: scale(0.9);
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.65rem;
+
+      .title {
+        margin: 0;
+        font-size: 1.25rem;
+        color: #1b1b1b;
+        font-family: "SF Pro Display";
+        letter-spacing: 0.75px;
+        font-weight: 500;
+        -webkit-text-stroke: 0.2px black;
+      }
+
+      .closeButton {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #666;
+
+        &:hover {
+          color: darken($color: #666, $amount: 5);
+        }
+      }
+    }
+
+    .content {
+      width: 100%;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}

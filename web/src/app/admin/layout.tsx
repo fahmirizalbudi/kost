@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SideNavigation from "./components/SideNavigation";
 import { menuSideNavigation } from "../data/menu";
+import AppBar from "./components/AppBar";
 
 export const metadata: Metadata = {
   title: "Kostopia - Admin Dashboard",
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <SideNavigation menu={menuSideNavigation} />
+        <AppBar />
         {children}
       </body>
     </html>

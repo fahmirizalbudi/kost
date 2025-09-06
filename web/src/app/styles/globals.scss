@@ -80,6 +80,16 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("../fonts/SFUIDisplay-Medium.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "SF Pro Rounded";
+  src: url("../fonts/SF-Pro-Rounded-Semibold.otf") format("opentype");
+}
+
 :root {
   font-family: "SF Pro Text", sans-serif;
 }
@@ -89,4 +99,23 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "SF Pro Text", sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(85, 86, 90, 0.12);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

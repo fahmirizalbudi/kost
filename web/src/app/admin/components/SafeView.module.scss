@@ -1,0 +1,7 @@
+@import "./../../styles/variable.scss";
+
+.view {
+  width: calc(100% - $sidebar-width);
+  margin-left: $sidebar-width;
+  padding: 18px 28px;
+}

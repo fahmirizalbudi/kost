@@ -1,0 +1,31 @@
+@import "./../../styles/variable.scss";
+
+.appbar {
+  width: calc(100% - $sidebar-width);
+  height: $appbar-height;
+  margin-left: $sidebar-width;
+  padding: 8px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .magnify {
+    cursor: pointer;
+  }
+
+  .profile {
+    width: 36px;
+    height: 36px;
+    border: 1px solid $primary-color;
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: lighten($color: $primary-color, $amount: 75);
+    }
+  }
+}

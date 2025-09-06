@@ -24,9 +24,9 @@ type SideNavigationProps = {
 
 const SideNavigationHeader = ({ text }: SideNavigationHeaderProps) => <li className={styles.header}>{text}</li>
 
-const SideNavigationList = ({ icon, label, isActive = false }: SideNavigationListProps) => (
+const SideNavigationList = ({ icon, label, linkTo, isActive = false }: SideNavigationListProps) => (
   <li className={`${styles.list}`}>
-    <Link href="#" className={`${styles.link} ${isActive ? styles.active : ""}`}>
+    <Link href={linkTo} className={`${styles.link} ${isActive ? styles.active : ""}`}>
       <div className={styles.icon}>
         <Image className={styles.svg} src={icon} alt="icon" width={20} height={20} />
       </div>
@@ -53,10 +53,10 @@ const SideNavigation = ({ menu }: SideNavigationProps) => {
             <ul className={styles.menu}>
               {menu.map((item, i) => (
                 item.type === MENU_SIDE_HEADER ? (
-                  <SideNavigationHeader text={item.text} />
+                  <SideNavigationHeader key={i} text={item.text} />
                 ) :
                 item.type === MENU_SIDE_LINK && (
-                  <SideNavigationList icon={asset(item.icon ?? "")} label={item.text} linkTo={item.linkTo ?? "#"} isActive={pathname === item.linkTo}  />
+                  <SideNavigationList key={i} icon={asset(item.icon ?? "")} label={item.text} linkTo={item.linkTo ?? "#"} isActive={pathname === item.linkTo}  />
                 )
               ))}
             </ul>

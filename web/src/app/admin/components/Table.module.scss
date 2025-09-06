@@ -30,8 +30,9 @@
         .td {
           text-align: left;
           padding: 18px 28px;
-          font-size: 14.5px;
+          font-size: 15.5px;
           color: #121212;
+          -webkit-text-stroke: 0.135px black;
         }
 
         &:not(:last-child) .td {

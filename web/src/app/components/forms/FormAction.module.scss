@@ -1,0 +1,45 @@
+@import "./../../styles/variable.scss";
+
+.actions {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 4px;
+
+  .submit {
+    border-radius: 8px;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #fff;
+    background-color: $primary-color;
+    height: fit-content;
+    text-decoration: none;
+    font-size: 15px;
+    border: none;
+
+    &:hover {
+      background-color: darken($color: $primary-color, $amount: 2.5);
+    }
+  }
+
+  .cancel {
+    border-radius: 8px;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: $primary-color;
+    background-color: #fff;
+    border: 1px solid rgba(85, 86, 90, 0.12);
+    height: fit-content;
+    text-decoration: none;
+    font-size: 15px;
+
+    &:hover {
+      background-color: darken($color: #fff, $amount: 2.5);
+    }
+  }
+}

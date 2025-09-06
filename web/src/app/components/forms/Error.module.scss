@@ -1,0 +1,12 @@
+.error {
+  font-size: 14px;
+  color: red;
+  position: relative;
+  left: 2px;
+  bottom: 5px;
+
+  .danger {
+    font-size: 15px;
+    margin-right: 3px;
+  }
+}

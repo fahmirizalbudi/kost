@@ -1,0 +1,47 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.trigger {
+  width: 100%;
+  border-radius: 6px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  outline: none;
+  background-color: #fff;
+  color: #1b1b1b;
+  border: 1px solid rgba(85, 86, 90, 0.12);
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 4px;
+  background-color: #fff;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+  border: 1px solid rgba(85, 86, 90, 0.12);
+}
+
+.option {
+  padding: 16px 18px;
+  cursor: pointer;
+  font-size: 15px;
+  position: relative;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+}

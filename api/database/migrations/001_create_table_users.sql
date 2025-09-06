@@ -1,7 +1,7 @@
 -- +migrate Up
 -- +migrate StatementBegin
 
-CREATE TYPE user_role AS ENUM ('owner', 'tenant');
+CREATE TYPE user_role AS ENUM ('admin', 'tenant');
 
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
